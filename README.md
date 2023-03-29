@@ -1,13 +1,14 @@
 # HPROnboard
  
 ## Things to Do:
-[] Set-up Sound Sensors
-[] Set-up Arduino Nano
-[] Set-up Micro SD Card
-[] Set-up IMU
-[] Set-up Barometer
-[] Outline Materials for Henry to Buy
-
+<ul>
+    <li>Set-up Sound Sensors<li\>
+    <li>Set-up Arduino Nano<li\>
+    <li>Set-up Micro SD Card<li\>
+    <li>Set-up IMU<li\>
+    <li>Set-up Barometer<li\>
+    <li>Outline Materials for Henry to Buy<li\>
+<ul>
 
 ## Contributions:
 Ziheng's Tasks:
