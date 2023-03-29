@@ -9,11 +9,3 @@ Things to Do:
     <li>Set-up Barometer<li\>
     <li>Outline Materials for Henry to Buy<li\>
 <ul>
-<br>
-
-Contributions:
-Ziheng's Tasks:
-
-Ryan's Tasks:
-
-Files Outline:
