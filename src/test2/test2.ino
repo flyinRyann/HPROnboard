@@ -52,11 +52,7 @@ int16_t gx, gy, gz;
 // not so easy to parse, and slow(er) over UART.
 #define OUTPUT_READABLE_ACCELGYRO
 
-// uncomment "OUTPUT_BINARY_ACCELGYRO" to send all 6 axes of data as 16-bit
-// binary, one right after the other. This is very fast (as fast as possible
-// without compression or data loss), and easy to parse, but impossible to read
-// for a human.
-//#define OUTPUT_BINARY_ACCELGYRO
+
 
 
 #define LED_PIN 13
@@ -71,7 +67,8 @@ bool blinkState = false;
 #include <Adafruit_BMP280.h>
 Adafruit_BMP280 bmp; // I2C
 
-
+long int t1 = millis();
+int currentAltitude = 96;
 
 
 
@@ -148,25 +145,45 @@ void setup() {
                   Adafruit_BMP280::SAMPLING_X16,    /* Pressure oversampling */
                   Adafruit_BMP280::FILTER_X16,      /* Filtering. */
                   Adafruit_BMP280::STANDBY_MS_500); /* Standby time. */
+
+
+  Serial.print("Time  ");
+  
+  Serial.print(F("Temperature ")); Serial.print("\t");
+  Serial.print(F("Pressure ")); Serial.print("\t");
+  Serial.print(F("altitude ")); Serial.print("\t");
+  Serial.print(F("height ")); Serial.print("\t"); Serial.print("\t");
+  Serial.print(F("Accel x ")); 
+  Serial.print(F("Accel y "));
+  Serial.print(F("Accel z "));
+  Serial.print(F("Gyro x "));
+  Serial.print(F("Gyro y "));
+  Serial.println(F("Gyro z "));
+  
+  
 }
 
 void loop() {
-
-
-  Serial.print(F("Temperature = "));
+    
+    long int t2 = millis();
+    Serial.print(t2-t1); Serial.print("\t");
+  
     Serial.print(bmp.readTemperature());
-    Serial.println(" *C");
+    Serial.print(" *C"); Serial.print("\t");
 
-    Serial.print(F("Pressure = "));
+    
     Serial.print(bmp.readPressure());
-    Serial.println(" Pa");
+    Serial.print(" Pa"); Serial.print("\t");
 
-    Serial.print(F("Approx altitude = "));
-    Serial.print(bmp.readAltitude(1013.25)); /* Adjusted to local forecast! */
-    Serial.println(" m");
+    
+    Serial.print(bmp.readAltitude(1000)); /* Adjusted to local forecast! */
+    Serial.print(" m"); Serial.print("\t"); Serial.print("\t");
 
-    Serial.println();
-    delay(2000);
+    Serial.print(bmp.readAltitude(1000) - currentAltitude);
+    Serial.print(" m"); Serial.print("\t"); Serial.print("\t");
+
+//    Serial.println();
+    
 
 
 
@@ -185,7 +202,7 @@ void loop() {
 
     #ifdef OUTPUT_READABLE_ACCELGYRO
         // display tab-separated accel/gyro x/y/z values
-        Serial.print("a/g:\t");
+//        Serial.print("a/g:\t");
         Serial.print(ax); Serial.print("\t");
         Serial.print(ay); Serial.print("\t");
         Serial.print(az); Serial.print("\t");
@@ -194,16 +211,11 @@ void loop() {
         Serial.println(gz);
     #endif
 
-    #ifdef OUTPUT_BINARY_ACCELGYRO
-        Serial.write((uint8_t)(ax >> 8)); Serial.write((uint8_t)(ax & 0xFF));
-        Serial.write((uint8_t)(ay >> 8)); Serial.write((uint8_t)(ay & 0xFF));
-        Serial.write((uint8_t)(az >> 8)); Serial.write((uint8_t)(az & 0xFF));
-        Serial.write((uint8_t)(gx >> 8)); Serial.write((uint8_t)(gx & 0xFF));
-        Serial.write((uint8_t)(gy >> 8)); Serial.write((uint8_t)(gy & 0xFF));
-        Serial.write((uint8_t)(gz >> 8)); Serial.write((uint8_t)(gz & 0xFF));
-    #endif
+
 
     // blink LED to indicate activity
     blinkState = !blinkState;
     digitalWrite(LED_PIN, blinkState);
+
+    delay(1000);
 }
